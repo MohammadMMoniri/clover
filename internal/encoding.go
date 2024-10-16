@@ -15,6 +15,11 @@ type Value struct {
 	V interface{}
 }
 
+type Location struct {
+    Latitude  float64
+    Longitude float64
+}
+
 func processStructTag(tagStr string) (string, bool) {
 	tags := strings.Split(tagStr, ",")
 	name := tags[0] // when tagStr is "", tags[0] will also be ""
@@ -124,6 +129,11 @@ func normalizeMap(mapValue reflect.Value) (map[string]interface{}, error) {
 	return m, nil
 }
 
+func NormalizeGeoLocation() (Location, error){
+	return Location{Latitude: 12.22,Longitude: 34.34 }, nil
+
+}
+
 func Normalize(value interface{}) (interface{}, error) {
 	if value == nil {
 		return nil, nil
@@ -164,6 +174,11 @@ func Normalize(value interface{}) (interface{}, error) {
 		return rValue.Bool(), nil
 	case reflect.Slice, reflect.Array:
 		return normalizeSlice(rValue)
+	}
+
+	if rType == reflect.TypeOf(Location{}){
+		return NormalizeGeoLocation()
+
 	}
 	return nil, fmt.Errorf("invalid dtype %s", rType.Name())
 }

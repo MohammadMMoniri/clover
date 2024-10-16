@@ -6,6 +6,7 @@ import (
 	"net/url"
 	"testing"
 
+	en "github.com/ostafen/clover/v2/internal"
 	"github.com/stretchr/testify/require"
 )
 
@@ -123,6 +124,13 @@ func TestDocumentSetPointer(t *testing.T) {
 
 	require.True(t, doc.Has("string"))
 	require.Nil(t, doc.Get("string"))
+}
+
+func TestDocumentGeoType(t *testing.T) {
+	doc := NewDocument()
+
+	location := en.Location{Latitude: 123.4567, Longitude: 67.898}
+	doc.Set("locatin", location)
 }
 
 func TestDocumentSetInvalidType(t *testing.T) {
